@@ -10,7 +10,11 @@ We expect this to take around an hour.
 
 You'll be building an endpoint to look up airport information. In its current state, we render a list of all airports (around 6000) on the frontend, but we don't want to keep this data in the frontend or load them all at once.
 
-Please move this data into a database scheme on the backend, and then write an endpoint that allows fetching data from the frontend. Your endpoint should allow user to look up airports by searching for airports by name, IATA, city, or country.
+## What we'd like you to do:
+
+- **Fix the Bug**: There is a Seaports resolver added to the backend, but in some edge-cases when searching for specific ports by specifying their IDs (e.g., 1, 2, 3), it throws an error and is unable to resolve anything. Investigate the issue and add a hotfix.
+- **Optimize airports data**: Please move this data into a database scheme on the backend.
+- **Add an endpoint**: Write an endpoint that allows fetching data from the frontend. Your endpoint should allow user to look up airports by searching for airports by name, IATA, city, or country.
 
 The designer gave you this mock-up as a reference. It's fine if the design doesn't look like this, since this exercise focuses on the back-end, but it gives you an idea of where this would go.
 
@@ -33,7 +37,7 @@ We'd love to hear your thoughts on some of these questions. Please don't spend m
 
 ## Deliverables
 
-- Invite [@pieterbeulque](https://github.com/pieterbeulque), [@Calvin-Tilla](https://github.com/Calvin-Tilla), and [@umartayyab](https://github.com/umartayyab) to a GitHub repo with your completed project
+- Invite [@umartayyab](https://github.com/umartayyab), [@Calvin-Tilla](https://github.com/Calvin-Tilla), [@akshatamohanty](https://github.com/akshatamohanty), and [@AleSua93](https://github.com/AleSua93) to a GitHub repo with your completed project
 - A video of your screen recording (unlisted YouTube video, Loom, … anything works)
 - Answers to the questions above can be either in the video or written down in the README of your repo
 
@@ -43,7 +47,7 @@ The app is designed to work out of the box.
 
 ```shell
 yarn install
-yarn dev
+yarn start
 ```
 
 The app should be available via [http://localhost:3000](http://localhost:3000).
