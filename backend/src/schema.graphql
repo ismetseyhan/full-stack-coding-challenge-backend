@@ -1,0 +1,17 @@
+type Query {
+  "A simple query that returns a welcome message"
+  hello: String!
+
+  getSeaport(id: Int!): Seaport!
+}
+
+type Seaport {
+  id: Int!
+  name: String!
+  location: Location!
+}
+
+type Location {
+  city: String!
+  countryAlpha2: String!
+}
