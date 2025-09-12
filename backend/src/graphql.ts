@@ -16,7 +16,7 @@ export interface IQuery {
 export interface Seaport {
     id: number;
     name: string;
-    location?: Nullable<Location>;
+    location: Location;
 }
 
 export interface Location {
