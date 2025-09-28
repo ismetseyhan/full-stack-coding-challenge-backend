@@ -5,6 +5,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { SeaportResolver } from './seaport.resolver';
+import { PrismaService } from './prisma/prisma.service';
+import { AirportService } from './airport/airport_service';
 
 @Module({
   imports: [
@@ -17,6 +19,12 @@ import { SeaportResolver } from './seaport.resolver';
     }),
   ],
   controllers: [],
-  providers: [AppService, AppResolver, SeaportResolver],
+  providers: [
+    AppService,
+    AppResolver,
+    SeaportResolver,
+    PrismaService,
+    AirportService,
+  ],
 })
 export class AppModule {}
