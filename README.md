@@ -1,55 +1,106 @@
-# Backend Coding Challenge
+# Backend Coding Challenge – Airport Lookup API
 
-Our main goal for this exercise is to get an idea of how you are to work with and how you approach your engineering work. That insight is more important than your actual working solution at the end of this exercise.
+This project is a solution to the backend coding challenge provided by Tilla. The main goal was to optimize airport data handling, resolve a bug in the Seaports resolver, and create a searchable API endpoint to retrieve airport data efficiently from the backend.
 
-Please record your screen and talk us through the coding exercise as you work through it. Don't hesitate to think out loud—that's the interesting part!
+## Tasks Completed
 
-We expect this to take around an hour.
+<img width="952" height="922" alt="image" src="https://github.com/user-attachments/assets/0c9fbe0b-177c-4d34-b85d-a987589f528d" />
 
-## Brief
+<img width="852" height="874" alt="image" src="https://github.com/user-attachments/assets/c7fa54a4-a8c5-46de-a244-96766a9e7009" />
 
-You'll be building an endpoint to look up airport information. In its current state, we render a list of all airports (around 6000) on the frontend, but we don't want to keep this data in the frontend or load them all at once.
 
-## What we'd like you to do:
 
-- **Fix the Bug**: There is a Seaports resolver added to the backend, but in some edge-cases when searching for specific ports by specifying their IDs (e.g., 1, 2, 3), it throws an error and is unable to resolve anything. Investigate the issue and add a hotfix.
-- **Optimize airports data**: Please move this data into a database scheme on the backend.
-- **Add an endpoint**: Write an endpoint that allows fetching data from the frontend. Your endpoint should allow user to look up airports by searching for airports by name, IATA, city, or country.
+### 1. Fixed Seaport Resolver Bug
+- In certain cases (e.g., querying specific IDs like 1, 2, 3), the `getSeaport` resolver would throw an error when the result was `null`.
+- The resolver was updated to safely return `null` when no match is found.
+- The `@ResolveField()` for `location` was also updated to guard against null parent objects.
 
-The designer gave you this mock-up as a reference. It's fine if the design doesn't look like this, since this exercise focuses on the back-end, but it gives you an idea of where this would go.
+### 2. Moved Airport Data to the Database
+- Create postgresql db via remote server
+- Created a new `Airport` model in the Prisma schema.
+- Migrated ~6,000 airport records from a JSON file into the PostgreSQL database using a seed script.
+- Added indexes on `iata`, `name`, `city`, and `country` for optimized search performance.
+- Made `iata` a unique field.
 
-![image](https://user-images.githubusercontent.com/144075/144594282-68de44cd-bef2-4d9d-8c5d-398862cbc964.png)
+### 3. Implemented Search API with Pagination
+- Added a GraphQL `searchAirports` query that supports:
+  - Full-text search on `iata`, `name`, `city`, or `country`.
+  - Pagination via `skip` and `take` arguments.
+  - Metadata such as `total`, `currentPage`, `totalPages`, `hasNextPage`, `hasPreviousPage`, and `pageSize`.
 
-## Assumptions
+## Running the App
 
-- Tilla uses [NestJS](https://nestjs.com), [Prisma](https://www.prisma.io) with PostgreSQL and TypeScript. It'd be cool if you use that same tech stack for this exercise.
-- The database is currently a JSON file with airport data.
-- The IATA code is a unique identifier for an airport.
-- While we care more about your thought process than your outcome, we're still interested in how you write code. Don't cut corners there, and write the code as if you'd write a real-world, production-quality product.
-
-## Extra questions
-
-We'd love to hear your thoughts on some of these questions. Please don't spend more than a minute or two on each question.
-
-- What are some edge cases you would take care of before shipping this to production?
-- How would you scale this to handle high amounts of traffic?
-- What's important for you to work well in a fully remote team?
-
-## Deliverables
-
-- Invite [@umartayyab](https://github.com/umartayyab), [@Calvin-Tilla](https://github.com/Calvin-Tilla), [@akshatamohanty](https://github.com/akshatamohanty), and [@AleSua93](https://github.com/AleSua93) to a GitHub repo with your completed project
-- A video of your screen recording (unlisted YouTube video, Loom, … anything works)
-- Answers to the questions above can be either in the video or written down in the README of your repo
-
-## Getting Started
-
-The app is designed to work out of the box.
-
-```shell
+```bash
 yarn install
 yarn start
 ```
 
-The app should be available via [http://localhost:3000](http://localhost:3000).
+App will be available at: http://localhost:3001/graphql
 
-Good luck and talk soon!
+## Example GraphQL Query
+
+```graphql
+query {
+  searchAirports(search: "berlin", skip: 0, take: 5) {
+    airports {
+      id
+      iata
+      name
+      city
+      country
+    }
+    total
+    currentPage
+    totalPages
+    hasNextPage
+    hasPreviousPage
+    pageSize
+  }
+}
+```
+
+## Commit Highlights
+
+- **fix seaport**: Prevent null crashes by allowing nullable return values.
+- **prisma**: Added Airport model and migration.
+- **seed**: Imported JSON data into the database.
+- **airports**: Implemented full-text search with pagination.
+- **fe**: Created airport search UI and detail page.
+- **fe**: Removed old files and cleaned up frontend logic.
+
+## Deliverables
+
+GitHub repo access granted to:
+- @umartayyab
+- @Calvin-Tilla
+- @akshatamohanty
+- @AleSua93
+
+- Screen recording video https://youtu.be/EHLc2uFapGs
+
+
+## Answers to Extra Questions
+
+### What edge cases would you consider before going to production?
+
+- Limit maximum `take` value to avoid heavy queries (e.g., `take <= 100`).
+- Ensure search input is sanitized and validated.
+- Handle cases where no results are found gracefully.
+- Protect against DB connection issues and timeouts.
+- Add proper error handling and status codes in case of system failure.
+
+### How would you scale this to handle high traffic?
+
+- Use caching (e.g., Redis) for frequently queried results.
+- Introduce full-text search with tools like PostgreSQL `tsvector` or ElasticSearch.
+- Set query timeouts and pagination limits.
+- Enable connection pooling and horizontal scaling for the backend.
+- Add API rate limiting and observability tools (e.g., Prometheus, Grafana).
+
+### What helps you work well in a fully remote team?
+
+- Clear, asynchronous communication (Slack, Notion, PR comments).
+- Well-defined tasks and expectations.
+- A culture of ownership, trust, and documentation.
+- Frequent and constructive code reviews.
+- Developer experience tools like CI pipelines, auto-formatting, and linting.
