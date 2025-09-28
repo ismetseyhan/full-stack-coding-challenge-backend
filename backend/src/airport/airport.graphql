@@ -1,0 +1,27 @@
+type Airport {
+  id: Int!
+  iata: String!
+  name: String
+  city: String
+  country: String
+  latitude: Float
+  longitude: Float
+}
+
+type AirportSearchResult {
+  airports: [Airport!]!
+  total: Int!
+  currentPage: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  pageSize: Int!
+}
+
+type Query {
+  searchAirports(
+    search: String
+    skip: Int = 0
+    take: Int = 100
+  ): AirportSearchResult!
+}

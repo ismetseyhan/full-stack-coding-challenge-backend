@@ -2,13 +2,13 @@ type Query {
   "A simple query that returns a welcome message"
   hello: String!
 
-  getSeaport(id: Int!): Seaport!
+  getSeaport(id: Int!): Seaport
 }
 
 type Seaport {
   id: Int!
   name: String!
-  location: Location!
+  location: Location
 }
 
 type Location {

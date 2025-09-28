@@ -9,3 +9,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Airport {
+  id        Int     @id @default(autoincrement())
+  iata      String  @unique
+  name      String?    // Nullable
+  city      String?    // Nullable
+  country   String?    // Nullable
+  latitude  Float?     // Nullable
+  longitude Float?     // Nullable
+
+  @@index([name])
+  @@index([city])
+  @@index([country])
+}
