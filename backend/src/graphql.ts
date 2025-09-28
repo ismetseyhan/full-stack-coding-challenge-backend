@@ -30,6 +30,7 @@ export interface AirportSearchResult {
 
 export interface IQuery {
     searchAirports(search?: Nullable<string>, skip?: Nullable<number>, take?: Nullable<number>): AirportSearchResult | Promise<AirportSearchResult>;
+    findAirportByIata(iata: string): Nullable<Airport> | Promise<Nullable<Airport>>;
     hello(): string | Promise<string>;
     getSeaport(id: number): Nullable<Seaport> | Promise<Nullable<Seaport>>;
 }

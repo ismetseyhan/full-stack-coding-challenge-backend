@@ -24,4 +24,5 @@ type Query {
     skip: Int = 0
     take: Int = 100
   ): AirportSearchResult!
+  findAirportByIata(iata: String!): Airport
 }
