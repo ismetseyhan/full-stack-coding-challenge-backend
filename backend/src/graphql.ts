@@ -10,13 +10,13 @@
 
 export interface IQuery {
     hello(): string | Promise<string>;
-    getSeaport(id: number): Seaport | Promise<Seaport>;
+    getSeaport(id: number): Nullable<Seaport> | Promise<Nullable<Seaport>>;
 }
 
 export interface Seaport {
     id: number;
     name: string;
-    location: Location;
+    location?: Nullable<Location>;
 }
 
 export interface Location {

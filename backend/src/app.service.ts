@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 // MOCK DATA
 const locations = [
   { portId: 1, city: 'Hamburg', countryAlpha2: 'DE' },
-  // { portId: 2, city: 'Rotterdam', country: 'Netherlands' },
+  { portId: 2, city: 'Rotterdam', countryAlpha2: 'Netherlands' },
 ];
 
 const seaports = [
@@ -18,11 +18,11 @@ export class AppService {
   }
 
   findSeaportById(id: number) {
-    return seaports.find((port) => port.id === id);
+    return seaports.find((port) => port.id === id) ?? null;
   }
 
   findLocationForPort(portId: number) {
     console.log(`SERVICE: Checking for location of port ${portId}...`);
-    return locations.find((loc) => loc.portId === portId);
+    return locations.find((loc) => loc.portId === portId) ?? null;
   }
 }
