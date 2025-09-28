@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { AppService } from './app.service';
-import { AirportSearchResult } from './graphql';
+import { Airport, AirportSearchResult } from './graphql';
 import { AirportService } from './airport/airport_service';
 
 @Resolver()
@@ -28,5 +28,10 @@ export class AppResolver {
       skip: safeSkip,
       take: safeTake,
     });
+  }
+
+  @Query('findAirportByIata')
+  async findAirportByIata(@Args('iata') iata: string): Promise<Airport | null> {
+    return this.airportService.findAirportByIata(iata);
   }
 }

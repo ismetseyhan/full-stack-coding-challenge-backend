@@ -40,7 +40,6 @@ export class AirportService {
       take,
     });
 
-    // map DB entities to your GraphQL type if needed; here they match 1:1
     const airports: Airport[] = airportsDb.map((a) => ({
       id: a.id,
       iata: a.iata,
@@ -64,6 +63,26 @@ export class AirportService {
       hasNextPage: hasNextPage,
       hasPreviousPage: hasPreviousPage,
       pageSize: take,
+    };
+  }
+
+  async findAirportByIata(iata: string): Promise<Airport | null> {
+    const airportDb = await this.prisma.airport.findFirst({
+      where: { iata: { equals: iata, mode: 'insensitive' } },
+    });
+
+    if (!airportDb) {
+      return null;
+    }
+
+    return {
+      id: airportDb.id,
+      iata: airportDb.iata,
+      name: airportDb.name ?? null,
+      city: airportDb.city ?? null,
+      country: airportDb.country ?? null,
+      latitude: airportDb.latitude ?? null,
+      longitude: airportDb.longitude ?? null,
     };
   }
 }
