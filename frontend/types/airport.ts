@@ -1,10 +1,19 @@
-interface Airport {
-  name: string
-  iata: string
-  city: string
-  country: string
-  longitude: number
-  latitude: number
+export interface Airport {
+  id: number;
+  name: string;
+  iata: string;
+  city: string;
+  country: string;
+  longitude: number | null;
+  latitude: number | null;
 }
 
-export default Airport
+export interface AirportSearchResult {
+  airports: Airport[];
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  pageSize: number;
+}
