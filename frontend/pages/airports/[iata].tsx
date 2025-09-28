@@ -1,15 +1,42 @@
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 
 import Layout from "../../components/layout";
-import { findAirportByIata } from "../../models/airport";
-import Airport from "../../types/airport";
+import { GET_AIRPORT_BY_IATA } from "../../graphql/queries";
+import { Airport } from "../../types/airport";
 
-interface Props {
-  airport: Airport | undefined;
-}
+const Page: NextPage = () => {
+  const router = useRouter();
+  const { iata } = router.query;
 
-const Page: NextPage<Props> = ({ airport }) => {
+  const { loading, error, data } = useQuery(GET_AIRPORT_BY_IATA, {
+    variables: { iata: iata as string },
+    skip: !iata,
+  });
+
+  if (loading)
+    return (
+      <Layout>
+        <div>Loading...</div>
+      </Layout>
+    );
+  if (error)
+    return (
+      <Layout>
+        <div>Error: {error.message}</div>
+      </Layout>
+    );
+  if (!data?.findAirportByIata)
+    return (
+      <Layout>
+        <div>Airport not found</div>
+      </Layout>
+    );
+
+  const airport: Airport = data.findAirportByIata;
+
   return (
     <Layout>
       <h1 className="mb-4 text-2xl font-bold">Airport: {airport.name}</h1>
@@ -24,17 +51,6 @@ const Page: NextPage<Props> = ({ airport }) => {
       </pre>
     </Layout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { iata } = params;
-  const airport = await findAirportByIata(iata.toString());
-
-  return {
-    props: {
-      airport,
-    },
-  };
 };
 
 export default Page;
